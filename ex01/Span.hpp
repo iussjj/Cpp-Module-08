@@ -6,8 +6,8 @@
 
 class Span {
 private:
-	unsigned int maxSize_;
-	std::vector<int> numbers_;
+	unsigned int maxSize_; //max capacity (get with numbers_.capacity())
+	std::vector<int> numbers_; //numbers_.size() gets *current capacity in use*
 
 public:
 	Span();
@@ -32,7 +32,7 @@ public:
 		}
 	};
 
-	template <std::input_iterator It>
+	template <std::forward_iterator It>
 	void addNumbers(It begin, It end) {
 		//check if the input range fits inside numbers_
 		//range is highly optimized

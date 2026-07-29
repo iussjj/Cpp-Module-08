@@ -6,9 +6,9 @@ CXX			= c++
 CXXFLAGS	= -Wall -Wextra -Werror -std=c++20
 
 # Source files and Object files
-SRCS		= main.cpp
+SRCS		= main.cpp Span.cpp
 OBJS		= $(SRCS:.cpp=.o)
-HEADERS		= array.hpp
+HEADERS		= Span.hpp
 
 # Rules
 all: $(NAME)

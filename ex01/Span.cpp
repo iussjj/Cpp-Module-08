@@ -18,14 +18,21 @@ Span::Span(const Span& source) : maxSize_(source.maxSize_), numbers_(source.numb
 
 /*
 	overkill memory safety: vector is copied to a temp variable, and only if the
-	copy succeeds, the target Span object's membe variables are updated
+	copy succeeds, the target Span object's member variables are updated
+	*Strong Exception Safety*
 */
 Span& Span::operator=(const Span& source) {
 
 	if (this != &source) {
-		std::vector<int> tmp = source.numbers_;
+		std::vector<int> tmp = source.numbers_; // deep copy into tmp
 		maxSize_ = source.maxSize_;
-		numbers_ = tmp;
+		/*
+			-since tmp won't be needed and will be destroyed when out of scope,
+			we can move it instead of copying
+			-in practice, the compiler might do this optimization automatically
+			even if we used numbers_ = tmp;
+		*/
+		numbers_ = std::move(tmp);
 	}
 	return *this;
 }

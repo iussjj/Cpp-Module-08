@@ -22,7 +22,7 @@ public:
 
 	class SpanFullException : public std::exception {
 		const char* what() const noexcept override {
-			return "Span is at maximum capacity";
+			return "Not enough room in span";
 		}
 	};
 

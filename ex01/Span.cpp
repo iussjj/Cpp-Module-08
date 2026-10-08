@@ -1,6 +1,8 @@
 #include "Span.hpp"
-#include <algorithm>
-#include <limits>
+
+#include <algorithm> // std::sort, std::minmax_element
+#include <limits> // std::numeric_limits
+#include <utility> // std::move
 
 // numbers_ is default constructed
 Span::Span() : maxSize_(0) {}
@@ -29,8 +31,6 @@ Span& Span::operator=(const Span& source) {
 		/*
 			-since tmp won't be needed and will be destroyed when out of scope,
 			we can move it instead of copying
-			-in practice, the compiler might do this optimization automatically
-			even if we used numbers_ = tmp;
 		*/
 		numbers_ = std::move(tmp);
 	}
@@ -53,8 +53,8 @@ unsigned int Span::shortestSpan() const {
 	std::sort(sortedNumbers_.begin(), sortedNumbers_.end());
 
 	unsigned int minDiff = std::numeric_limits<unsigned int>::max();
-	for (size_t i = 0 ; i < (numbers_.size() - 1) ; i++) {
-		long diff = static_cast<long>(sortedNumbers_[i + 1]) - sortedNumbers_[i];
+	for (std::size_t i = 0 ; i < (numbers_.size() - 1) ; i++) {
+		long long diff = static_cast<long long>(sortedNumbers_[i + 1]) - sortedNumbers_[i];
 		if (static_cast<unsigned int>(diff) < minDiff) {
 			minDiff = static_cast<unsigned int>(diff);
 		}
@@ -74,8 +74,16 @@ unsigned int Span::longestSpan() const {
 		-handles edge case if trying to subtract INT_MAX - INT_MIN
 		-implicit conversion ok, because no data can be lost when smaller -> larger
 	*/
-	long min = *result.first;
-	long max = *result.second;
+	long long min = *result.first;
+	long long max = *result.second;
 
 	return static_cast<unsigned int>(max - min);
+}
+
+const char* Span::SpanFullException::what() const noexcept {
+	return "Not enough room in span";
+}
+
+const char* Span::NotEnoughNumbersException::what() const noexcept {
+	return "Not enough numbers in span: need at least 2";
 }

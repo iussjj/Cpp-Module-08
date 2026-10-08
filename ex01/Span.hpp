@@ -1,13 +1,14 @@
 #pragma once
 
+#include <cstddef> // std::size_t
+#include <exception> // std::exception
+#include <iterator> // std::forward_iterator, std::distance
 #include <vector>
-#include <stdexcept>
-#include <iterator> // required for std::input_iterator and std::distance
 
 class Span {
 private:
-	unsigned int maxSize_; //max capacity (get with numbers_.capacity())
-	std::vector<int> numbers_; //numbers_.size() gets *current capacity in use*
+	unsigned int maxSize_; //maximum number of elements allowed
+	std::vector<int> numbers_; //size() returns number of stored elements
 
 public:
 	Span();
@@ -21,22 +22,20 @@ public:
 	unsigned int longestSpan() const;
 
 	class SpanFullException : public std::exception {
-		const char* what() const noexcept override {
-			return "Not enough room in span";
-		}
+	public:
+		const char* what() const noexcept override;
 	};
 
 	class NotEnoughNumbersException : public std::exception {
-		const char* what() const noexcept override {
-			return "Not enough numbers in span: need at least 2";
-		}
+	public:
+		const char* what() const noexcept override;
 	};
 
 	template <std::forward_iterator It>
 	void addNumbers(It begin, It end) {
+		auto count = std::distance(begin, end);
 		//check if the input range fits inside numbers_
-		//range is highly optimized
-		if (numbers_.size() + std::distance(begin, end) > maxSize_) {
+		if (static_cast<std::size_t>(count) > maxSize_ - numbers_.size()) {
 			throw SpanFullException();
 		}
 		// range-based insert

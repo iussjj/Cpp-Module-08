@@ -1,8 +1,6 @@
 #pragma once
 
 #include <stack>
-#include <iterator>
-#include <iostream>
 
 /*
 	-std::stack doesn't manage its own memory. It has an internal *protected* container
@@ -52,7 +50,8 @@ public:
 
 /*
 	ITERATOR NOTES:
-	-An iterator is a "smart pointer" for collections
+	-An iterator is an object that provides a standardized way to access
+	 and traverse elements in a range
 	-can increment or decrement: ++it --it
 	-can access stored value *it
 	-recognizes end of collection: it == end

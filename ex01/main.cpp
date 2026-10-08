@@ -22,7 +22,7 @@ int main()
 		// empty span
 		Span sp(10000);
 
-		// empty source vector
+		// vector containing 10000 zero-initialized integers
 		std::vector<int> v(10000);
 
 		/*
@@ -47,13 +47,13 @@ int main()
 		try {
 			std::cout << sp.shortestSpan() << std::endl;
 		} catch (const std::exception& e) {
-			std::cerr << "Error: " << e.what() << std::endl;
+			std::cout << "Error: " << e.what() << std::endl;
 		}
 		std::cout << "Trying to add to full span:" << std::endl;
 		try {
 			sp.addNumber(9000);
 		} catch (const std::exception& e) {
-			std::cerr << "Error: " << e.what() << std::endl;
+			std::cout << "Error: " << e.what() << std::endl;
 		}
 	}
 	{
@@ -67,7 +67,7 @@ int main()
 		try {
 			sp.addNumbers(list.begin(), list.end());
 		} catch (const std::exception& e) {
-			std::cerr << "Error: " << e.what() << std::endl;
+			std::cout << "Error: " << e.what() << std::endl;
 		}
 	}
 	return 0;
